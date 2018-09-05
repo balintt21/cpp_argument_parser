@@ -59,12 +59,12 @@ namespace argument_parser
         return "";
     }
 
-    int64_t getInt(std::vector<std::string>::const_iterator& arg_it, const std::vector<std::string>& args)
+    int64_t getInt(std::vector<std::string>::const_iterator& arg_it, const std::vector<std::string>& args, int base = 10)
     {
         std::string value = get(arg_it, args);
         if( !value.empty() )
         {
-            return std::strtoll(value.c_str(), nullptr, 10);
+            return std::strtoll(value.c_str(), nullptr, base);
         }
         return 0;
     }
