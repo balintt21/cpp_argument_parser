@@ -15,6 +15,16 @@ namespace argument_parser
         for(int i = 0; i < argc; ++i){ arguments.emplace_back(argv[i]); }
         return std::move(arguments);
     }
+    
+    bool empty(const std::vector<std::string>& args)
+    {
+        return (args.size() < 2);
+    }
+
+    const std::string& process_name(const std::vector<std::string>& args)
+    {
+        return args[0];
+    }
 
     std::vector<std::string>::const_iterator find(const std::string& short_opt, const std::string& long_opt, const std::vector<std::string>& args)
     {
@@ -67,6 +77,11 @@ namespace argument_parser
             return std::strtold(value.c_str(), nullptr);
         }
         return 0.0f;
+    }
+    
+    int64_t getHex(std::vector<std::string>::const_iterator& arg_it, const std::vector<std::string>& args)
+    {
+        return getInt(arg_it, args, 16);
     }
 }
 
