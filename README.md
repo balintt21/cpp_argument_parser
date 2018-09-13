@@ -1,5 +1,13 @@
 # cpp_argument_parser
-Lightweight argument parser class
+ArgumentParser is lightweight argument parser class which uses std::string_view if compiled with c++17
+
+## Member functions
+* processName()
+* empty()
+* find(short_opt, long_opt)
+* has(short_opt, long_opt)
+* found(argument)
+
 
 # Example
 
