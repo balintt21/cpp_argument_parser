@@ -2,6 +2,7 @@
 Lightweight argument parser class
 
 #Example:
+
     #include <stdio.h>
     #include "argument_parser.h"
 
