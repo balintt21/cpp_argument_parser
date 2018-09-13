@@ -6,44 +6,50 @@
 #include <algorithm>
 #include <cstdlib>
 
-namespace argument_parser
+class ArgumentParser
 {
-    std::vector<std::string> read(int argc, char** argv)
+    #if __cplusplus == 201703L
+        typedef std::vector<std::string_view> arguments_t;
+    #else
+        typedef std::vector<std::string> arguments_t;
+    #endif
+
+    arguments_t args;
+    std::string process_name;
+public:
+    ArgumentParser(int argc, char** argv)
     {
-        std::vector<std::string> arguments;
-        arguments.reserve(argc);
-        for(int i = 0; i < argc; ++i){ arguments.emplace_back(argv[i]); }
-        return std::move(arguments);
+        args.reserve(argc);
+        for(int i = 0; i < argc; ++i){ args.emplace_back(argv[i]); }
+        process_name = std::string(args[0]);
     }
     
-    bool empty(const std::vector<std::string>& args)
-    {
-        return (args.size() < 2);
-    }
+    bool empty()
+    { return (args.size() < 2); }
 
-    const std::string& process_name(const std::vector<std::string>& args)
-    {
-        return args[0];
-    }
+    const std::string& processName()
+    { return process_name; }
 
-    std::vector<std::string>::const_iterator find(const std::string& short_opt, const std::string& long_opt, const std::vector<std::string>& args)
+    arguments_t::const_iterator find(const std::string& short_opt, const std::string& long_opt)
     {
-        return std::find_if(args.cbegin(), args.cend(), [long_opt, short_opt](const std::string& option) -> bool 
+        return std::find_if(args.cbegin(), args.cend(), [long_opt, short_opt](const arguments_t::value_type& option) -> bool 
         {
-            return ( (option.find(long_opt) != std::string::npos ) || (!short_opt.empty() && ((option[0] == '-') && (option[1] != '-') && (option.find(short_opt[1]) != std::string::npos))) );
+            return ( ( (!long_opt.empty()) && (option.find(long_opt) != std::string::npos ) )
+                || ( !short_opt.empty() && ((option[0] == '-') && (option[1] != '-') && (option.find(short_opt[1]) != std::string::npos)) ) );
         });    
     }
 
-    bool has(const std::string& short_opt, const std::string& long_opt, const std::vector<std::string>& args)
-    { 
-        return find(short_opt, long_opt, args) != args.cend(); 
-    }
+    bool has(const std::string& short_opt, const std::string& long_opt)
+    { return find(short_opt, long_opt) != args.cend(); }
 
-    std::string get(std::vector<std::string>::const_iterator& arg_it, const std::vector<std::string>& args)
+    bool found(const arguments_t::const_iterator& arg_it)
+    { return arg_it != args.cend(); }
+
+    std::string get(arguments_t::const_iterator& arg_it)
     {
         if( arg_it != args.cend() )
         {
-            const std::string& option = (*arg_it);
+            const std::string& option = std::string(*arg_it);
             size_t pos = 0;
             if( (pos = option.find('=')) != std::string::npos )
             {
@@ -52,37 +58,29 @@ namespace argument_parser
                 ++arg_it;
                 if( arg_it != args.cend() )
                 {
-                    return (*arg_it);
+                    auto res = std::string(*arg_it);
+                    --arg_it;
+                    return res;
                 }
             }
         }
         return "";
     }
 
-    int64_t getInt(std::vector<std::string>::const_iterator& arg_it, const std::vector<std::string>& args, int base = 10)
+    int64_t getInt(arguments_t::const_iterator& arg_it, int base = 10)
     {
-        std::string value = get(arg_it, args);
-        if( !value.empty() )
-        {
-            return std::strtoll(value.c_str(), nullptr, base);
-        }
-        return 0;
+        std::string value = get(arg_it);
+        return ( ( !value.empty() ) ? (std::strtoll(value.c_str(), nullptr, base)) : (0) );
     }
 
-    int64_t getDouble(std::vector<std::string>::const_iterator& arg_it, const std::vector<std::string>& args)
+    double getDouble(arguments_t::const_iterator& arg_it)
     {
-        std::string value = get(arg_it, args);
-        if( !value.empty() )
-        {
-            return std::strtold(value.c_str(), nullptr);
-        }
-        return 0.0f;
+        std::string value = get(arg_it);
+        return ( ( !value.empty() ) ? (std::strtold(value.c_str(), nullptr)) : (0.0f) );
     }
     
-    int64_t getHex(std::vector<std::string>::const_iterator& arg_it, const std::vector<std::string>& args)
-    {
-        return getInt(arg_it, args, 16);
-    }
-}
+    int64_t getHex(arguments_t::const_iterator& arg_it)
+    { return getInt(arg_it, 16); }
+};
 
 #endif
