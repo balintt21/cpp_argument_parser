@@ -1,7 +1,7 @@
 # cpp_argument_parser
 Lightweight argument parser class
 
-# Complex example
+# Example
 
     #include <stdio.h>
     #include "argument_parser.h"
