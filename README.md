@@ -19,10 +19,12 @@ ArgumentParser is lightweight argument parser class which uses std::string_view 
     myprogram --verbose --disable
     
 ### Code
-    
-    ArgumentParser argparser(argc, argv);
-    const bool verbose_flag = argparser("-v", "--verbose");
-    const bool disable_flag = argparser("", "--disable");//it has no short version
+
+```c++
+ArgumentParser argparser(argc, argv);
+const bool verbose_flag = argparser("-v", "--verbose");
+const bool disable_flag = argparser("", "--disable");//it has no short version
+```
     
 ## Example for find(short_opt, long_opt) => argument iterator
 ### Terminal
