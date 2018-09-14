@@ -13,6 +13,8 @@ ArgumentParser is lightweight argument parser class which uses std::string_view 
 * getHex(argument iterator) => int64
 
 ## Example for has(short_opt, long_opt) => bool
+Works with: myprogram -v --disable
+            myprogram --verbose --disable
     ArgumentParser argparser(argc, argv);
     const bool verbose_flag = argparser("-v", "--verbose");
     const bool disable_flag = argparser("", "--disable");//it has no short version
