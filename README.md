@@ -12,6 +12,19 @@ ArgumentParser is lightweight argument parser class which uses std::string_view 
 * getDouble(argument iterator) => double
 * getHex(argument iterator) => int64
 
+## Example for has(short_opt, long_opt) => bool
+    ArgumentParser argparser(argc, argv);
+    const bool verbose_flag = argparser("-v", "--verbose");
+    const bool disable_flag = argparser("", "--disable");//it has no short version
+    
+## Example for find(short_opt, long_opt) => argument iterator
+    ArgumentParser argparser(argc, argv);
+    auto sound_volume_option = argparser.find("-V", "--volume");
+    int64_t sound_volume = 100;//percent
+    if( argparser.found(sound_volume_option) )
+    {
+        sound_volume = argparser.getInt(sound_volume_option);
+    }
 
 # Example
 
