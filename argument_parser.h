@@ -10,8 +10,10 @@ class ArgumentParser
 {
     #if __cplusplus == 201703L
         typedef std::vector<std::string_view> arguments_t;
+        typedef std::string_view string_value_t;
     #else
         typedef std::vector<std::string> arguments_t;
+        typedef std::string string_value_t;
     #endif
 
     arguments_t args;
