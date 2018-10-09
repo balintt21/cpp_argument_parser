@@ -1,0 +1,2 @@
+std::string get(arguments_t::const_iterator& arg_it) should return with string_value_t
+overload get like std::vector<std::string_value_t> get(arguments_t::const_iterator& arg_it, const char* delimiter)
