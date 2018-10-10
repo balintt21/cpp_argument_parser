@@ -17,7 +17,7 @@ It uses std::string_view under the hood if compiled with c++17, what makes it a 
 * *getInt*(iterator) => ```int64_t```
 * *getDouble*(iterator) => ```double```
 * *getHex*(iterator) => ```int64_t```
-## Member functions(C++17)
+## Member functions(C++17) :new:
 > short_opt:```string```, long_opt: ```string```
 * *get*(short_opt, long_opt) => ```optional< string_view >```
 * *getString*(short_opt, long_opt) => ```optional< string >```
