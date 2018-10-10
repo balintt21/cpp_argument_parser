@@ -18,7 +18,7 @@ int main(int argc, char** argv)
                 "\t-h, --help            Show this help message\n\n"
                "\t-l, --list            [value][delim=',']*\n"
                "\t                      Accepts a list of values separated by ','\n"
-              , arguments.processName() );
+              , arguments.programName() );
         return 0;
     }
 

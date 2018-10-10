@@ -19,9 +19,9 @@ public:
     typedef arguments_t string_list_t;
 private:
     arguments_t args;
-    const char* process_name;
+    const char* program_name;
 public:
-    ArgumentParser(int argc, char** argv) : args(), process_name(argv[0])
+    ArgumentParser(int argc, char** argv) : args(), program_name(argv[0])
     {
         args.reserve(argc);
         for(int i = 0; i < argc; ++i){ args.emplace_back(argv[i]); }
@@ -30,8 +30,8 @@ public:
     bool empty()
     { return (args.size() < 2); }
 
-    const char* processName() const
-    { return process_name; }
+    const char* programName() const
+    { return program_name; }
 
     arguments_t::const_iterator find(const std::string& short_opt, const std::string& long_opt) const
     {
