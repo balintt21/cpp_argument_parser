@@ -65,7 +65,7 @@ int main(int argc, char** argv)
                "\t    --long            Long version option\n"
                "\t-o, --optional        It is optional\n"
                "\t-h, --help            Show this help message\n"
-              , arguments.processName().c_str() );
+              , arguments.processName() );
         return 0;
     }
 
@@ -78,32 +78,51 @@ int main(int argc, char** argv)
     int64_t hexadecimal = 0;
     std::string hex_as_str;
     std::string message;
+    
+    #if __cplusplus == 201703L
+        if( auto integer_option = arguments.getInt("-i", "--integer") )
+        { integer_value = integer_option.value(); }
 
-    auto integer_option = arguments.find("-i", "--integer");
-    if( arguments.found(integer_option) )
-    {
-        integer_value = arguments.getInt(integer_option);
-    }
+        if( auto double_option = arguments.getDouble("-d", "--double") )
+        { double_value = double_option.value(); }
 
-    auto double_option = arguments.find("-d", "--double");
-    if( arguments.found(double_option) )
-    {
-        double_value = arguments.getDouble(double_option);
-    }
+        if( auto hex_option = arguments.getInt("-x", "--hex") )
+        { 
+            hexadecimal = hex_option.value();
+            hex_as_str = arguments.getString("-x", "--hex").value();
+        }
 
-    auto hex_option = arguments.find("-x", "--hex");
-    if( arguments.found(hex_option) )
-    {
-        hex_as_str = arguments.get(hex_option);
-        hexadecimal = arguments.getHex(hex_option);
-    }
+        if( auto msg_option = arguments.get("-m", "--message") )
+        {
+            message = msg_option.value();
+        }
+    #else
+        auto integer_option = arguments.find("-i", "--integer");
+        if( arguments.found(integer_option) )
+        {
+            integer_value = arguments.getInt(integer_option);
+        }
 
-    auto msg_option = arguments.find("-m", "--message");
-    if( arguments.found(msg_option) )
-    {
-        message = arguments.get(msg_option);
-    }
+        auto double_option = arguments.find("-d", "--double");
+        if( arguments.found(double_option) )
+        {
+            double_value = arguments.getDouble(double_option);
+        }
 
+        auto hex_option = arguments.find("-x", "--hex");
+        if( arguments.found(hex_option) )
+        {
+            hex_as_str = arguments.get(hex_option);
+            hexadecimal = arguments.getHex(hex_option);
+        }
+
+        auto msg_option = arguments.find("-m", "--message");
+        if( arguments.found(msg_option) )
+        {
+            message = arguments.get(msg_option);
+        }
+    #endif
+    
     printf("Read values:\n\tinteger(%ld), double(%f), hex(%s:%ld)\n"
            "\tflag(%s), short(%s), long(%s)\n"
            "\tmessage: '%s'\n"
