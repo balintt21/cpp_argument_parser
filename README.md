@@ -14,11 +14,11 @@ ArgumentParser is lightweight argument parser class which uses std::string_view 
 * getDouble(argument iterator) => double
 * getHex(argument iterator) => int64_t
 ## Member functions(C++17)
-* get(short_opt, long_opt) => optional<string_view>
-* getString(short_opt, long_opt) => optional<string>
-* getInt(short_opt, long_opt) => optional<int64_t>
-* getDouble(short_opt, long_opt) => optional<double>
-* getHex(short_opt, long_opt) => optional<int64_t>
+* get(short_opt, long_opt) => optional< string_view >
+* getString(short_opt, long_opt) => optional< string >
+* getInt(short_opt, long_opt) => optional< int64_t >
+* getDouble(short_opt, long_opt) => optional< double >
+* getHex(short_opt, long_opt) => optional< int64_t >
 
 
 ## Example for has(short_opt, long_opt) => bool
