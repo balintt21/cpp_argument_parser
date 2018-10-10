@@ -14,6 +14,7 @@ It uses std::string_view under the hood if compiled with c++17, what makes it a 
 * *found*(iterator) => ```bool```
 * *get*(iterator) => ```string```|```string_view```**(c++17)**
 * *getString*(iterator) => ```string```
+* *getList*(iterator,delimiter) => ```vector<string>```
 * *getInt*(iterator) => ```int64_t```
 * *getDouble*(iterator) => ```double```
 * *getHex*(iterator) => ```int64_t```
@@ -21,6 +22,7 @@ It uses std::string_view under the hood if compiled with c++17, what makes it a 
 > short_opt:```string```, long_opt: ```string```
 * *get*(short_opt, long_opt) => ```optional< string_view >```
 * *getString*(short_opt, long_opt) => ```optional< string >```
+* *getList*(short_opt, long_opt) => ```optional< vector<string> >```
 * *getInt*(short_opt, long_opt) => ```optional< int64_t >```
 * *getDouble*(short_opt, long_opt) => ```optional< double >```
 * *getHex*(short_opt, long_opt) => ```optional< int64_t >```
@@ -68,6 +70,32 @@ if( auto sound_opt = argparser.getInt("-V", "--volume") )
 }
 ```
 
+## Example for getList()
+### Terminal
+    myprogram -l 1,two,3,four,5
+    myprogram --list=a,b,c,d
+    
+### Code
+```c++
+ArgumentParser arguments(argc, argv);
+ArgumentParser::string_list_t list;
+auto list_option = arguments.find("-l", "--list");
+if( arguments.found(list_option) )
+{
+    list = arguments.getList(list_option, ",");
+}
+```
+
+### Code(C++17)
+```c++
+ArgumentParser arguments(argc, argv);
+ArgumentParser::string_list_t list;
+if( auto list_option = arguments.getList("-l", "--list", ",") )
+{ 
+    list = list_option.value(); 
+}
+```
+
 # Example
 
 ```c++
@@ -88,7 +116,9 @@ int main(int argc, char** argv)
                "\t-s                    Short version option\n"
                "\t    --long            Long version option\n"
                "\t-o, --optional        It is optional\n"
-               "\t-h, --help            Show this help message\n"
+                "\t-h, --help            Show this help message\n\n"
+               "\t-l, --list            [value][delim=',']*\n"
+               "\t                      Accepts a list of values separated by ','\n"
               , arguments.processName() );
         return 0;
     }
@@ -102,9 +132,9 @@ int main(int argc, char** argv)
     int64_t hexadecimal = 0;
     std::string hex_as_str;
     std::string message;
+    ArgumentParser::string_list_t list;
     
     #if __cplusplus == 201703L
-    //C++17
         if( auto integer_option = arguments.getInt("-i", "--integer") )
         { integer_value = integer_option.value(); }
 
@@ -119,6 +149,9 @@ int main(int argc, char** argv)
 
         if( auto msg_option = arguments.get("-m", "--message") )
         { message = msg_option.value(); }
+
+        if( auto list_option = arguments.getList("-l", "--list", ",") )
+        { list = list_option.value(); }
     #else
         auto integer_option = arguments.find("-i", "--integer");
         if( arguments.found(integer_option) )
@@ -144,6 +177,12 @@ int main(int argc, char** argv)
         {
             message = arguments.get(msg_option);
         }
+
+        auto list_option = arguments.find("-l", "--list");
+        if( arguments.found(list_option) )
+        {
+            list = arguments.getList(list_option, ",");
+        }
     #endif
     
     printf("Read values:\n\tinteger(%ld), double(%f), hex(%s:%ld)\n"
@@ -157,6 +196,13 @@ int main(int argc, char** argv)
           , short_version_only ? "true" : "false"
           , long_version_only ? "true" : "false"
           , message.c_str());
+    
+    puts("List:");
+    for( auto& element : list )
+    {
+        std::string value(element);
+        printf("\t%s\n", value.c_str());
+    }
 
     return 0;
 }
