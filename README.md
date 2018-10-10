@@ -135,6 +135,7 @@ int main(int argc, char** argv)
     ArgumentParser::string_list_t list;
     
     #if __cplusplus == 201703L
+    //C++17
         if( auto integer_option = arguments.getInt("-i", "--integer") )
         { integer_value = integer_option.value(); }
 
@@ -153,6 +154,7 @@ int main(int argc, char** argv)
         if( auto list_option = arguments.getList("-l", "--list", ",") )
         { list = list_option.value(); }
     #else
+    //C++11
         auto integer_option = arguments.find("-i", "--integer");
         if( arguments.found(integer_option) )
         {
