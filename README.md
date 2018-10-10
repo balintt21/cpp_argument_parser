@@ -2,7 +2,7 @@
 ArgumentParser is lightweight argument parser class which uses std::string_view under the hood if compiled with c++17
 
 ## Member functions
-> Note: short_opt:```string```, long_opt: ```string```
+> short_opt:```string```, long_opt: ```string```
 * *processName*() => ```const char*```
 * *empty*() => ```bool```
 * *has*(short_opt, long_opt) => ```bool```
@@ -15,6 +15,7 @@ ArgumentParser is lightweight argument parser class which uses std::string_view 
 * *getDouble*(iterator) => ```double```
 * *getHex*(iterator) => ```int64_t```
 ## Member functions(C++17)
+> short_opt:```string```, long_opt: ```string```
 * *get*(short_opt, long_opt) => ```optional< string_view >```
 * *getString*(short_opt, long_opt) => ```optional< string >```
 * *getInt*(short_opt, long_opt) => ```optional< int64_t >```
