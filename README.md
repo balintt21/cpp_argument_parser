@@ -54,7 +54,7 @@ if( argparser.found(sound_volume_option) )
 ```
 
 ### Code(C++17)
-> There is no need for using find() and found() only getInt()
+> There is no need for using find() and then checking with found(). The same result can be achieved with getInt().
 ```c++
 ArgumentParser argparser(argc, argv);
 int64_t sound_volume = 100;//percent
