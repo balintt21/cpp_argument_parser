@@ -19,7 +19,8 @@ ArgumentParser is lightweight argument parser class which uses std::string_view 
 * *getInt*(short_opt, long_opt) => ```optional< int64_t >```
 * *getDouble*(short_opt, long_opt) => ```optional< double >```
 * *getHex*(short_opt, long_opt) => ```optional< int64_t >```
-> A typical short_opt cab be "-h" while it's long option pair can be "--help"
+
+> A typical short_opt can be "-h" while it's long option pair can be "--help"
 
 
 ## Example for using has()
