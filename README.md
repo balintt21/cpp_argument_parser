@@ -14,14 +14,14 @@ ArgumentParser is lightweight argument parser class which uses std::string_view 
 * *getDouble*(iterator) => ```double```
 * *getHex*(iterator) => ```int64_t```
 ## Member functions(C++17)
-* get(short_opt, long_opt) => optional< string_view >
-* getString(short_opt, long_opt) => optional< string >
-* getInt(short_opt, long_opt) => optional< int64_t >
-* getDouble(short_opt, long_opt) => optional< double >
-* getHex(short_opt, long_opt) => optional< int64_t >
+* *get*(short_opt, long_opt) => ```optional< string_view >```
+* *getString*(short_opt, long_opt) => ```optional< string >```
+* *getInt*(short_opt, long_opt) => ```optional< int64_t >```
+* *getDouble*(short_opt, long_opt) => ```optional< double >```
+* *getHex*(short_opt, long_opt) => ```optional< int64_t >```
 
 
-## Example for has(short_opt, long_opt) => bool
+## Example for using has()
 ### Terminal 
     
     myprogram -v --disable 
@@ -35,7 +35,7 @@ const bool verbose_flag = argparser.has("-v", "--verbose");
 const bool disable_flag = argparser.has("", "--disable");//it has no short version
 ```
     
-## Example for find(short_opt, long_opt) => argument iterator
+## Example for using find(), getInt()
 ### Terminal
 
     myprogram -V 58
@@ -54,11 +54,11 @@ if( argparser.found(sound_volume_option) )
 ```
 
 ### Code(C++17)
+> There is no need for using find() and found() only getInt()
 ```c++
 ArgumentParser argparser(argc, argv);
-auto sound_volume_option = argparser.find("-V", "--volume");
 int64_t sound_volume = 100;//percent
-if( auto sound_opt = argparser.getInt(sound_volume_option) )
+if( auto sound_opt = argparser.getInt("-V", "--volume") )
 { 
     sound_volume = sound_opt.value();
 }
