@@ -7,15 +7,17 @@
 #include <optional>
 #include <cstdlib>
 
-class ArgumentParser
+class ArgumentParser final
 {
+public:
     #if __cplusplus == 201703L
         typedef std::string_view string_value_t;
     #else
         typedef std::string string_value_t;
     #endif
     typedef std::vector<string_value_t> arguments_t;
-    
+    typedef arguments_t string_list_t;
+private:
     arguments_t args;
     const char* process_name;
 public:
@@ -37,7 +39,7 @@ public:
         {
             return ( ( (!long_opt.empty()) && (option.find(long_opt) != std::string::npos ) )
                 || ( !short_opt.empty() && ((option[0] == '-') && (option[1] != '-') && (option.find(short_opt[1]) != std::string::npos)) ) );
-        });    
+        });
     }
 
     bool has(const std::string& short_opt, const std::string& long_opt) const
@@ -53,9 +55,9 @@ public:
     {
         if( arg_it != args.cend() )
         {
-            const std::string& option = std::string(*arg_it);
-            size_t pos = 0;
-            if( (pos = option.find('=')) != string_value_t::npos )
+            const string_value_t& option = *arg_it;
+            size_t pos = option.find('=');
+            if( pos != string_value_t::npos )
             {
                 return option.substr(pos+1);
             } else {
@@ -69,6 +71,25 @@ public:
             }
         }
         return "";
+    }
+
+    string_list_t getList(arguments_t::const_iterator& arg_it, const std::string& delim) const
+    {
+        string_list_t list;
+        auto packed_value = get(arg_it);
+        size_t pos = packed_value.find(delim);
+        while( pos != string_value_t::npos )
+        {
+            if( pos > 0)
+            { list.emplace_back(packed_value.substr(0, pos)); }
+            packed_value = packed_value.substr(pos + 1);
+            pos = packed_value.find(delim);
+        }
+
+        if( !packed_value.empty() )
+        { list.emplace_back(packed_value); }
+
+        return list;
     }
 
     std::string getString(arguments_t::const_iterator& arg_it) const
@@ -96,7 +117,7 @@ public:
     std::optional<string_value_t> get(const std::string& short_opt, const std::string& long_opt) const
     {
         auto arg = find(short_opt, long_opt);
-        return ( found(arg) ? std::make_optional<string_value_t>(*arg) : std::nullopt );
+        return ( found(arg) ? std::make_optional<string_value_t>(get(arg)) : std::nullopt );
     }
 
     std::optional<std::string> getString(const std::string& short_opt, const std::string& long_opt) const 
@@ -131,6 +152,12 @@ public:
 
     std::optional<int64_t> getHex(const std::string& short_opt, const std::string& long_opt) const
     { return getInt(short_opt, long_opt, 16); }
+
+    std::optional<string_list_t> getList(const std::string& short_opt, const std::string& long_opt, const std::string& delim) const
+    {
+        auto arg = find(short_opt, long_opt);
+        return ( found(arg) ? std::make_optional<string_list_t>(getList(arg, delim)) : std::nullopt );
+    }
 
     #endif
 

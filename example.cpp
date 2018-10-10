@@ -15,7 +15,9 @@ int main(int argc, char** argv)
                "\t-s                    Short version option\n"
                "\t    --long            Long version option\n"
                "\t-o, --optional        It is optional\n"
-               "\t-h, --help            Show this help message\n"
+                "\t-h, --help            Show this help message\n\n"
+               "\t-l, --list            [value][delim=',']*\n"
+               "\t                      Accepts a list of values separated by ','\n"
               , arguments.processName() );
         return 0;
     }
@@ -29,6 +31,7 @@ int main(int argc, char** argv)
     int64_t hexadecimal = 0;
     std::string hex_as_str;
     std::string message;
+    ArgumentParser::string_list_t list;
     
     #if __cplusplus == 201703L
         if( auto integer_option = arguments.getInt("-i", "--integer") )
@@ -44,9 +47,10 @@ int main(int argc, char** argv)
         }
 
         if( auto msg_option = arguments.get("-m", "--message") )
-        {
-            message = msg_option.value();
-        }
+        { message = msg_option.value(); }
+
+        if( auto list_option = arguments.getList("-l", "--list", ",") )
+        { list = list_option.value(); }
     #else
         auto integer_option = arguments.find("-i", "--integer");
         if( arguments.found(integer_option) )
@@ -72,6 +76,12 @@ int main(int argc, char** argv)
         {
             message = arguments.get(msg_option);
         }
+
+        auto list_option = arguments.find("-l", "--list");
+        if( arguments.found(list_option) )
+        {
+            list = arguments.getList(list_option, ",");
+        }
     #endif
     
     printf("Read values:\n\tinteger(%ld), double(%f), hex(%s:%ld)\n"
@@ -85,6 +95,13 @@ int main(int argc, char** argv)
           , short_version_only ? "true" : "false"
           , long_version_only ? "true" : "false"
           , message.c_str());
+    
+    puts("List:");
+    for( auto& element : list )
+    {
+        std::string value(element);
+        printf("\t%s\n", value.c_str());
+    }
 
     return 0;
 }
