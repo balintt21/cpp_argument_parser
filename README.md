@@ -6,7 +6,7 @@ It uses std::string_view under the hood if compiled with c++17, what makes it a 
 
 ## Member functions
 > short_opt:```string```, long_opt: ```string```
-* *processName*() => ```const char*```
+* *programName*() => ```const char*```
 * *empty*() => ```bool```
 * *has*(short_opt, long_opt) => ```bool```
 * *exists*(short_opt, long_opt) ~ alias for has
@@ -119,7 +119,7 @@ int main(int argc, char** argv)
                 "\t-h, --help            Show this help message\n\n"
                "\t-l, --list            [value][delim=',']*\n"
                "\t                      Accepts a list of values separated by ','\n"
-              , arguments.processName() );
+              , arguments.programName() );
         return 0;
     }
 
