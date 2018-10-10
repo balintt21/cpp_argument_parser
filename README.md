@@ -2,7 +2,7 @@
 ## ArgumentParser is lightweight header only argument parser class
 It uses std::string_view under the hood if compiled with c++17, what makes it a good choice for programs that are expecting a large number of arguments or large payload as argument.
 - *Minimum requirement: **C++11***
-- *Recommended: **C++17***
+- *Recommended: **C++17*** :cool:
 
 ## Member functions
 > short_opt:```string```, long_opt: ```string```
