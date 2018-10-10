@@ -1,5 +1,5 @@
 # cpp_argument_parser
-ArgumentParser is lightweight argument parser class which uses std::string_view if compiled with c++17
+ArgumentParser is lightweight argument parser class which uses std::string_view under the hood if compiled with c++17
 
 ## Member functions
 * *processName*() => ```const char*```
@@ -8,7 +8,7 @@ ArgumentParser is lightweight argument parser class which uses std::string_view 
 * *exists*(short_opt, long_opt) ~ alias for has
 * *find*(short_opt, long_opt) => ```iterator```
 * *found*(iterator) => ```bool```
-* *get*(iterator) => ```string|string_view```
+* *get*(iterator) => ```string```|```string_view```**(c++17)**
 * *getString*(iterator) => ```string```
 * *getInt*(iterator) => ```int64_t```
 * *getDouble*(iterator) => ```double```
@@ -19,9 +19,6 @@ ArgumentParser is lightweight argument parser class which uses std::string_view 
 * *getInt*(short_opt, long_opt) => ```optional< int64_t >```
 * *getDouble*(short_opt, long_opt) => ```optional< double >```
 * *getHex*(short_opt, long_opt) => ```optional< int64_t >```
-
-> A typical short_opt can be "-h" while it's long option pair can be "--help"
-
 
 ## Example for using has()
 ### Terminal 
