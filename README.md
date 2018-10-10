@@ -80,6 +80,7 @@ int main(int argc, char** argv)
     std::string message;
     
     #if __cplusplus == 201703L
+    //C++17
         if( auto integer_option = arguments.getInt("-i", "--integer") )
         { integer_value = integer_option.value(); }
 
@@ -93,9 +94,7 @@ int main(int argc, char** argv)
         }
 
         if( auto msg_option = arguments.get("-m", "--message") )
-        {
-            message = msg_option.value();
-        }
+        { message = msg_option.value(); }
     #else
         auto integer_option = arguments.find("-i", "--integer");
         if( arguments.found(integer_option) )
