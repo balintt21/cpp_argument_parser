@@ -131,10 +131,7 @@ public:
     std::optional<int64_t> getInt(const std::string& short_opt, const std::string& long_opt, int base = 10) const
     {
         if( auto opt = get(short_opt, long_opt) )
-        { 
-            std::string value(opt.value());
-            return ( ( !value.empty() ) ? (std::strtoll(value.c_str(), nullptr, base)) : (0) );
-        } 
+        { return std::strtoll(opt.value().data(), nullptr, base); } 
         else
         { return std::nullopt; }
     }
@@ -142,10 +139,7 @@ public:
     std::optional<double> getDouble(const std::string& short_opt, const std::string& long_opt) const
     {
         if( auto opt = get(short_opt, long_opt) )
-        { 
-            std::string value(opt.value());
-            return ( ( !value.empty() ) ? (std::strtold(value.c_str(), nullptr)) : (0) );
-        } 
+        { return std::strtold(opt.value().data(), nullptr); } 
         else
         { return std::nullopt; }
     }
