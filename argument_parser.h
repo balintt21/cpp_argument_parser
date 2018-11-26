@@ -7,14 +7,14 @@
 #include <optional>
 #include <cstdlib>
 
+#if __cplusplus == 201703L
+#   pragma GCC error "ArgumentParser requires C++17 support!"
+#endif
+
 class ArgumentParser final
 {
 public:
-    #if __cplusplus == 201703L
-        typedef std::string_view string_value_t;
-    #else
-        typedef std::string string_value_t;
-    #endif
+    typedef std::string_view string_value_t;
     typedef std::vector<string_value_t> arguments_t;
     typedef arguments_t string_list_t;
 private:
@@ -92,28 +92,6 @@ public:
         return list;
     }
 
-    std::string getString(arguments_t::const_iterator& arg_it) const
-    {
-        return std::string(get(arg_it));
-    }
-
-    int64_t getInt(arguments_t::const_iterator& arg_it, int base = 10) const
-    {
-        std::string value(get(arg_it));
-        return ( ( !value.empty() ) ? (std::strtoll(value.c_str(), nullptr, base)) : (0) );
-    }
-
-    double getDouble(arguments_t::const_iterator& arg_it) const
-    {
-        std::string value(get(arg_it));
-        return ( ( !value.empty() ) ? (std::strtold(value.c_str(), nullptr)) : (0.0f) );
-    }
-    
-    int64_t getHex(arguments_t::const_iterator& arg_it) const
-    { return getInt(arg_it, 16); }
-
-    #if __cplusplus == 201703L
-
     std::optional<string_value_t> get(const std::string& short_opt, const std::string& long_opt) const
     {
         auto arg = find(short_opt, long_opt);
@@ -152,9 +130,6 @@ public:
         auto arg = find(short_opt, long_opt);
         return ( found(arg) ? std::make_optional<string_list_t>(getList(arg, delim)) : std::nullopt );
     }
-
-    #endif
-
 };
 
 #endif
