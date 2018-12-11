@@ -32,6 +32,9 @@ public:
 
     const char* programName() const
     { return program_name; }
+    
+    string_value_t back() const
+    { return args.back(); }
 
     arguments_t::const_iterator find(const std::string& short_opt, const std::string& long_opt) const
     {
