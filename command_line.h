@@ -18,17 +18,23 @@ public:
         : line_buffer_size(line_size), command_map(), exit_command_name("quit") 
     {}
     /**
+     * Register a command name and assign a handler function
+     * When the given name is read from the command line, everything that follows the command will be passed to
+     * the handler function wrapped into an ArgumentParser object
      * 
+     * @param name Name of the command
+     * @param function Handler function of the command with the following footprint: int (const ArgumentParser&)
      */
     void registerCommand(const std::string& name, const std::function<int (const ArgumentParser&)>& function)
     { command_map.emplace(name, function); }
     /**
-     * 
+     * Register a name for exiting command loop
+     * @param name Name of the exit command
      */
     void registerExit(const std::string& name)
     { exit_command_name = name; }
     /**
-     * 
+     * Returns the registered command names
      */
     std::vector<std::string> commandNames() const
     {
@@ -38,7 +44,7 @@ public:
         return cmd_names;
     }
     /**
-     * 
+     * Runs the command loop
      */
     int run() const
     {   
