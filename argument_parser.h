@@ -14,26 +14,30 @@
 class ArgumentParser final
 {
 public:
-    typedef std::string_view string_value_t;
-    typedef std::vector<string_value_t> arguments_t;
-    typedef arguments_t string_list_t;
+    typedef std::vector<std::string_view> arguments_t;
+    typedef arguments_t stringview_list_t;
 private:
     arguments_t args;
-    const char* program_name;
+    std::string program_name;
 public:
     ArgumentParser(int argc, char** argv) : args(), program_name(argv[0])
     {
         args.reserve(argc);
-        for(int i = 0; i < argc; ++i){ args.emplace_back(argv[i]); }
+        for(int i = 0; i < argc; ++i) { args.emplace_back(argv[i]); }
+    }
+
+    ArgumentParser(const arguments_t& _args) : args(_args) 
+    { 
+        if( !args.empty() ) { program_name = std::string(args.front()); }
     }
     
-    bool empty()
+    bool empty() const
     { return (args.size() < 2); }
 
     const char* programName() const
-    { return program_name; }
+    { return program_name.c_str(); }
     
-    string_value_t back() const
+    std::string_view back() const
     { return args.back(); }
 
     arguments_t::const_iterator find(const std::string& short_opt, const std::string& long_opt) const
@@ -54,13 +58,13 @@ public:
     bool found(const arguments_t::const_iterator& arg_it) const
     { return arg_it != args.cend(); }
 
-    string_value_t get(arguments_t::const_iterator& arg_it) const
+    std::string_view get(arguments_t::const_iterator& arg_it) const
     {
         if( arg_it != args.cend() )
         {
-            const string_value_t& option = *arg_it;
+            const std::string_view& option = *arg_it;
             size_t pos = option.find('=');
-            if( pos != string_value_t::npos )
+            if( pos != std::string_view::npos )
             {
                 return option.substr(pos+1);
             } else {
@@ -76,12 +80,12 @@ public:
         return "";
     }
 
-    string_list_t getList(arguments_t::const_iterator& arg_it, const std::string& delim) const
+    stringview_list_t getList(arguments_t::const_iterator& arg_it, const std::string& delim) const
     {
-        string_list_t list;
+        stringview_list_t list;
         auto packed_value = get(arg_it);
         size_t pos = packed_value.find(delim);
-        while( pos != string_value_t::npos )
+        while( pos != std::string_view::npos )
         {
             if( pos > 0)
             { list.emplace_back(packed_value.substr(0, pos)); }
@@ -95,10 +99,10 @@ public:
         return list;
     }
 
-    std::optional<string_value_t> get(const std::string& short_opt, const std::string& long_opt) const
+    std::optional<std::string_view> get(const std::string& short_opt, const std::string& long_opt) const
     {
         auto arg = find(short_opt, long_opt);
-        return ( found(arg) ? std::make_optional<string_value_t>(get(arg)) : std::nullopt );
+        return ( found(arg) ? std::make_optional<std::string_view>(get(arg)) : std::nullopt );
     }
 
     std::optional<std::string> getString(const std::string& short_opt, const std::string& long_opt) const 
@@ -128,10 +132,10 @@ public:
     std::optional<int64_t> getHex(const std::string& short_opt, const std::string& long_opt) const
     { return getInt(short_opt, long_opt, 16); }
 
-    std::optional<string_list_t> getList(const std::string& short_opt, const std::string& long_opt, const std::string& delim) const
+    std::optional<stringview_list_t> getList(const std::string& short_opt, const std::string& long_opt, const std::string& delim) const
     {
         auto arg = find(short_opt, long_opt);
-        return ( found(arg) ? std::make_optional<string_list_t>(getList(arg, delim)) : std::nullopt );
+        return ( found(arg) ? std::make_optional<stringview_list_t>(getList(arg, delim)) : std::nullopt );
     }
 };
 
