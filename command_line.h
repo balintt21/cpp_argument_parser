@@ -14,8 +14,8 @@ class CommandLine
 {
 public:
     static constexpr size_t DEFUALT_LINE_SIZE = 256;
-    CommandLine(size_t line_size = DEFUALT_LINE_SIZE) 
-        : line_buffer_size(line_size), command_map(), exit_command_name("quit") 
+    CommandLine(bool silent_mode = false, size_t line_size = DEFUALT_LINE_SIZE) 
+        : line_buffer_size(line_size), command_map(), exit_command_name("quit"), silent(silent_mode)
     {}
     /**
      * Register a command name and assign a handler function
@@ -51,6 +51,18 @@ public:
         int exit_code = 0;
         bool quit = false;
         std::unique_ptr<std::vector<char>> line_buffer(new std::vector<char>(line_buffer_size));
+
+        if(!silent)
+        {
+            printf("Available commands:\n");
+            for(auto it = command_map.cbegin(); it != command_map.cend(); ++it ) 
+            { 
+                printf("\t%s\n", it->first.c_str()); 
+            }
+            printf("\t%s\n", exit_command_name.c_str()); 
+            printf("\n");
+        }
+
         while(!quit)
         {
             if( fgets(line_buffer->data(), line_buffer->size(), stdin) != nullptr )
@@ -71,7 +83,7 @@ public:
                             ArgumentParser parser(args);
                             exit_code = cmd_it->second(parser);
                             quit = exit_code != 0;
-                        } else {
+                        } else if(!silent) {
                             printf("Invalid command: %s\n", cmd_str.c_str());
                         }
                     }
@@ -103,6 +115,7 @@ protected:
     const size_t                                                      line_buffer_size;
     std::map<std::string, std::function<int (const ArgumentParser&)>> command_map;
     std::string                                                       exit_command_name;
+    bool                                                              silent;
 };
 
 #endif
