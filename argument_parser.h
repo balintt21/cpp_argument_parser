@@ -7,7 +7,7 @@
 #include <optional>
 #include <cstdlib>
 
-#if __cplusplus != 201703L
+#if __cplusplus < 201703L
 #   pragma GCC error "ArgumentParser requires C++17 support!"
 #endif
 
