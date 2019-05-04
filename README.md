@@ -140,6 +140,7 @@ int main(int argc, char** argv)
 - *Requirement: ArgumentParser*
 
 ## Member functions
+> ```const std::string& command_name```
 * *registerCommand(command_name, [handler_function](#handler-function-type))* -> ```void```
 * *registerExit(command_name)* -> ```void```
 * *run()* -> ```int```
