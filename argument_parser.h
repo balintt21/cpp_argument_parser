@@ -11,6 +11,8 @@
 #   pragma GCC error "ArgumentParser requires C++17 support!"
 #endif
 
+#include <string_view>
+
 class ArgumentParser final
 {
 public:
@@ -31,14 +33,21 @@ public:
         if( !args.empty() ) { program_name = std::string(args.front()); }
     }
     
-    bool empty() const
-    { return (args.size() < 2); }
+    const char* programName() const { return program_name.c_str(); }
 
-    const char* programName() const
-    { return program_name.c_str(); }
+    bool empty() const  { return (args.size() < 2); }
+
+    size_t size() const { return args.size(); }
+
+    std::string_view front() const { return args.front(); }
     
-    std::string_view back() const
-    { return args.back(); }
+    std::string_view back() const { return args.back(); }
+
+    std::string_view back(size_t pos) const { return args[args.size() - 1- pos]; }
+
+    std::string_view at(size_t pos) const { return args.at(pos); }
+
+    std::string_view operator[](size_t pos) const { return args[pos]; }
 
     arguments_t::const_iterator find(const std::string& short_opt, const std::string& long_opt) const
     {
@@ -49,14 +58,11 @@ public:
         });
     }
 
-    bool has(const std::string& short_opt, const std::string& long_opt) const
-    { return find(short_opt, long_opt) != args.cend(); }
-
-    bool exists(const std::string& short_opt, const std::string& long_opt) const 
-    { return has(short_opt, long_opt); }
-
     bool found(const arguments_t::const_iterator& arg_it) const
     { return arg_it != args.cend(); }
+
+    bool has(const std::string& short_opt, const std::string& long_opt) const
+    { return find(short_opt, long_opt) != args.cend(); }
 
     std::string_view get(arguments_t::const_iterator& arg_it) const
     {
@@ -67,7 +73,8 @@ public:
             if( pos != std::string_view::npos )
             {
                 return option.substr(pos+1);
-            } else {
+            } 
+            else {
                 ++arg_it;
                 if( arg_it != args.cend() )
                 {
@@ -78,6 +85,12 @@ public:
             }
         }
         return "";
+    }
+
+    std::optional<std::string_view> get(const std::string& short_opt, const std::string& long_opt) const
+    {
+        auto arg = find(short_opt, long_opt);
+        return ( found(arg) ? std::make_optional<std::string_view>(get(arg)) : std::nullopt );
     }
 
     stringview_list_t getList(arguments_t::const_iterator& arg_it, const std::string& delim) const
@@ -97,12 +110,6 @@ public:
         { list.emplace_back(packed_value); }
 
         return list;
-    }
-
-    std::optional<std::string_view> get(const std::string& short_opt, const std::string& long_opt) const
-    {
-        auto arg = find(short_opt, long_opt);
-        return ( found(arg) ? std::make_optional<std::string_view>(get(arg)) : std::nullopt );
     }
 
     std::optional<std::string> getString(const std::string& short_opt, const std::string& long_opt) const 

@@ -8,14 +8,14 @@ int main(int argc, char** argv)
     {
         printf("Usage: %s [OPTIONS]\n"
                "\nOptions:\n"
-               "\t-m, --message [MSG]   Expects some message\n"
+               "\t-m, --message [MSG]   Expects some string\n"
                "\t-i, --integer [VALUE] Expects integer value\n"
                "\t-d, --double=[VALUE]  Expects double value\n"
                "\t-x, --hex [VALUE]     Expects hexa value\n"
                "\t-s                    Short version option\n"
                "\t    --long            Long version option\n"
                "\t-o, --optional        It is optional\n"
-                "\t-h, --help            Show this help message\n\n"
+                "\t-h, --help           Show this help message\n\n"
                "\t-l, --list            [value][delim=',']*\n"
                "\t                      Accepts a list of values separated by ','\n"
               , arguments.programName() );
@@ -31,71 +31,50 @@ int main(int argc, char** argv)
     int64_t hexadecimal = 0;
     std::string hex_as_str;
     std::string message;
-    ArgumentParser::string_list_t list;
+    ArgumentParser::stringview_list_t list;
     
-    #if __cplusplus == 201703L
-        if( auto integer_option = arguments.getInt("-i", "--integer") )
-        { integer_value = integer_option.value(); }
+    if( auto integer_option = arguments.getInt("-i", "--integer") )
+    { integer_value = integer_option.value(); }
 
-        if( auto double_option = arguments.getDouble("-d", "--double") )
-        { double_value = double_option.value(); }
+    if( auto double_option = arguments.getDouble("-d", "--double") )
+    { double_value = double_option.value(); }
 
-        if( auto hex_option = arguments.getInt("-x", "--hex") )
-        { 
-            hexadecimal = hex_option.value();
-            hex_as_str = arguments.getString("-x", "--hex").value();
-        }
+    if( auto hex_option = arguments.getHex("-x", "--hex") )
+    { 
+        hexadecimal = hex_option.value();
+    }
 
-        if( auto msg_option = arguments.get("-m", "--message") )
-        { message = msg_option.value(); }
+    if( auto msg_option = arguments.get("-m", "--message") )
+    { message = msg_option.value(); }
 
-        if( auto list_option = arguments.getList("-l", "--list", ",") )
-        { list = list_option.value(); }
-    #else
-        auto integer_option = arguments.find("-i", "--integer");
-        if( arguments.found(integer_option) )
-        {
-            integer_value = arguments.getInt(integer_option);
-        }
+    if( auto list_option = arguments.getList("-l", "--list", ",") )
+    { list = list_option.value(); }
+   
+    auto front = std::string(arguments.front());
+    auto back = std::string(arguments.back());
+    auto before_back = std::string(arguments.back(1));
 
-        auto double_option = arguments.find("-d", "--double");
-        if( arguments.found(double_option) )
-        {
-            double_value = arguments.getDouble(double_option);
-        }
-
-        auto hex_option = arguments.find("-x", "--hex");
-        if( arguments.found(hex_option) )
-        {
-            hex_as_str = arguments.get(hex_option);
-            hexadecimal = arguments.getHex(hex_option);
-        }
-
-        auto msg_option = arguments.find("-m", "--message");
-        if( arguments.found(msg_option) )
-        {
-            message = arguments.get(msg_option);
-        }
-
-        auto list_option = arguments.find("-l", "--list");
-        if( arguments.found(list_option) )
-        {
-            list = arguments.getList(list_option, ",");
-        }
-    #endif
+    printf("front: \t\"%s\"\nback: \t\"%s\"\nback-1: \"%s\"\n\n"
+          , front.c_str()
+          , back.c_str()
+          , before_back.c_str()
+    );
     
-    printf("Read values:\n\tinteger(%ld), double(%f), hex(%s:%ld)\n"
-           "\tflag(%s), short(%s), long(%s)\n"
+    printf("Read values:\n"
+           "\tinteger(%ld)\n"
+           "\tdouble(%f)\n"
+           "\thex(0x%lx)\n"
+           "\tflag(%s)\n"
+           "\tshort(%s)\n"
+           "\tlong(%s)\n"
            "\tmessage: '%s'\n"
           , integer_value
           , double_value
-          , hex_as_str.c_str()
           , hexadecimal
           , flag ? "true" : "false"
           , short_version_only ? "true" : "false"
           , long_version_only ? "true" : "false"
           , message.c_str());
-    
     puts("List:");
     for( auto& element : list )
     {
