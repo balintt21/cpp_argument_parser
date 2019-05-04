@@ -14,38 +14,21 @@ class CommandLine
 {
 public:
     static constexpr size_t DEFUALT_LINE_SIZE = 256;
-    CommandLine(bool silent_mode = false, size_t line_size = DEFUALT_LINE_SIZE) 
-        : line_buffer_size(line_size), command_map(), exit_command_name("quit"), silent(silent_mode)
+    CommandLine(const std::string& exit_command = "quit", bool silent_mode = false, size_t line_size = DEFUALT_LINE_SIZE) 
+        : line_buffer_size(line_size), command_map(), exit_command_name("exit_command"), silent(silent_mode)
     {}
-    /**
-     * Register a command name and assign a handler function
-     * When the given name is read from the command line, everything that follows the command will be passed to
-     * the handler function wrapped into an ArgumentParser object
-     * 
-     * @param name Name of the command
-     * @param function Handler function of the command with the following footprint: int (const ArgumentParser&)
-     */
-    void registerCommand(const std::string& name, const std::function<int (const ArgumentParser&)>& function)
-    { command_map.emplace(name, function); }
-    /**
-     * Register a name for exiting command loop
-     * @param name Name of the exit command
-     */
-    void registerExit(const std::string& name)
-    { exit_command_name = name; }
-    /**
-     * Returns the registered command names
-     */
-    std::vector<std::string> commandNames() const
+
+    void add(const std::string& command_name, const std::function<int (const ArgumentParser&)>& function)
+    { command_map.emplace(command_name, function); }
+
+    std::vector<std::string> commandList() const
     {
         std::vector<std::string> cmd_names;
         for(auto it = command_map.cbegin(); it != command_map.cend(); ++it ) { cmd_names.emplace_back(it->first); }
         cmd_names.emplace_back(exit_command_name);
         return cmd_names;
     }
-    /**
-     * Runs the command loop
-     */
+
     int run() const
     {   
         int exit_code = 0;
@@ -54,7 +37,7 @@ public:
 
         if(!silent)
         {
-            printf("Available commands:\n");
+            printf("Commands\n");
             for(auto it = command_map.cbegin(); it != command_map.cend(); ++it ) 
             { 
                 printf("\t%s\n", it->first.c_str()); 
