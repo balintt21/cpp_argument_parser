@@ -140,7 +140,7 @@ int main(int argc, char** argv)
 - *Requirement: ArgumentParser*
 
 ## Member functions
-* *registerCommand(command_name, [handler_function](###handler-function-type))* -> ```void```
+* *registerCommand(command_name, [handler_function](#handler-function-type))* -> ```void```
 * *registerExit(command_name)* -> ```void```
 * *run()* -> ```int```
 
