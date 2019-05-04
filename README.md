@@ -13,7 +13,7 @@
   Thus, ‘-o foo’ and ‘-ofoo’ are equivalent.
 - Options typically precede other non-option arguments
 - Long options consist of ‘--’ followed by a name made of alphanumeric characters and dashes
-[Source: POSIX Program Argument Syntax Conventions](https://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html)
+> [See POSIX Program Argument Syntax Conventions](https://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html)
 
 ## Getter functions
 > pos:```size_t```
