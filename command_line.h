@@ -14,8 +14,9 @@ class CommandLine
 {
 public:
     static constexpr size_t DEFUALT_LINE_SIZE = 256;
+
     CommandLine(const std::string& exit_command = "quit", bool silent_mode = false, size_t line_size = DEFUALT_LINE_SIZE) 
-        : line_buffer_size(line_size), command_map(), exit_command_name("exit_command"), silent(silent_mode)
+        : line_buffer_size(line_size), command_map(), exit_command_name(exit_command), silent(silent_mode)
     {}
 
     void add(const std::string& command_name, const std::function<int (const ArgumentParser&)>& function)
