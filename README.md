@@ -134,8 +134,10 @@ int main(int argc, char** argv)
 }
 ```
 
-# CommandLine class provides a command line loop
+# CommandLine class provides an event loop
 [:arrow_left: Classes](#classes)
+- *Parses commands with arguments from standard input*
+- *Requirement: ArgumentParser*
 
 # Code generator
 [:arrow_left: Tools](#tools)
