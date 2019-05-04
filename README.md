@@ -144,7 +144,7 @@ int main(int argc, char** argv)
 * *registerExit(command_name)* -> ```void```
 * *run()* -> ```int```
 
-### Handler function type:
+### Handler function type
 ```c++
 std::function<int (const ArgumentParser&)>
 ```
