@@ -13,7 +13,10 @@
 * *back*(pos) -> ```std::string_view```
 * *at*(pos) -> ```std::string_view```
 * *[pos]* -> ```std::string_view```
-## Parser functions
+## Option parser functions
+- *If an argument starts with '-'  then it is recognized as short option*
+- *If an argument starts with "--" then it is recognized as long option*
+- Option marker characters can be ommited when using the following functions 
 > short_opt:```const std::string&```, long_opt: ```const std::string&```
 * *has*(short_opt, long_opt)       -> ```bool```
 * *get*(short_opt, long_opt)       -> ```std::optional< std::string_view >```
