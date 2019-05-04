@@ -18,10 +18,7 @@ class ArgumentParser final
 public:
     typedef std::vector<std::string_view> arguments_t;
     typedef arguments_t stringview_list_t;
-private:
-    arguments_t args;
-    std::string program_name;
-public:
+
     ArgumentParser(int argc, char** argv) : args(), program_name(argv[0])
     {
         args.reserve(argc);
@@ -49,72 +46,13 @@ public:
 
     std::string_view operator[](size_t pos) const { return args[pos]; }
 
-    arguments_t::const_iterator find(const std::string& short_opt, const std::string& long_opt) const
-    {
-        std::string _short_opt(short_opt);
-        std::string _long_opt(long_opt);
-        if( !_short_opt.empty() && (short_opt[0] != '-') )                              { _short_opt.insert(0, "-"); }
-        while( !_long_opt.empty() && (_long_opt[0] != '-') && (_long_opt[1] != '-') )   { _long_opt.insert(0, "-"); }
-
-        return std::find_if(args.cbegin(), args.cend(), [_long_opt, _short_opt](const arguments_t::value_type& option) -> bool 
-        {
-            return ( ( (!_long_opt.empty()) && (option.find(_long_opt) != std::string::npos ) )
-                || ( !_short_opt.empty() && ((option[0] == '-') && (option[1] != '-') && (option.find(_short_opt[1]) != std::string::npos)) ) );
-        });
-    }
-
-    bool found(const arguments_t::const_iterator& arg_it) const
-    { return arg_it != args.cend(); }
-
     bool has(const std::string& short_opt, const std::string& long_opt) const
     { return find(short_opt, long_opt) != args.cend(); }
-
-    std::string_view get(arguments_t::const_iterator& arg_it) const
-    {
-        if( arg_it != args.cend() )
-        {
-            const std::string_view& option = *arg_it;
-            size_t pos = option.find('=');
-            if( pos != std::string_view::npos )
-            {
-                return option.substr(pos+1);
-            } 
-            else {
-                ++arg_it;
-                if( arg_it != args.cend() )
-                {
-                    auto res = *arg_it;
-                    --arg_it;
-                    return res;
-                }
-            }
-        }
-        return "";
-    }
 
     std::optional<std::string_view> get(const std::string& short_opt, const std::string& long_opt) const
     {
         auto arg = find(short_opt, long_opt);
-        return ( found(arg) ? std::make_optional<std::string_view>(get(arg)) : std::nullopt );
-    }
-
-    stringview_list_t getList(arguments_t::const_iterator& arg_it, const std::string& delim) const
-    {
-        stringview_list_t list;
-        auto packed_value = get(arg_it);
-        size_t pos = packed_value.find(delim);
-        while( pos != std::string_view::npos )
-        {
-            if( pos > 0)
-            { list.emplace_back(packed_value.substr(0, pos)); }
-            packed_value = packed_value.substr(pos + 1);
-            pos = packed_value.find(delim);
-        }
-
-        if( !packed_value.empty() )
-        { list.emplace_back(packed_value); }
-
-        return list;
+        return ( found(arg) ? std::make_optional<std::string_view>(get(arg, short_opt, long_opt)) : std::nullopt );
     }
 
     std::optional<std::string> getString(const std::string& short_opt, const std::string& long_opt) const 
@@ -147,7 +85,73 @@ public:
     std::optional<stringview_list_t> getList(const std::string& short_opt, const std::string& long_opt, const std::string& delim) const
     {
         auto arg = find(short_opt, long_opt);
-        return ( found(arg) ? std::make_optional<stringview_list_t>(getList(arg, delim)) : std::nullopt );
+        return ( found(arg) ? std::make_optional<stringview_list_t>(getList(arg, delim, short_opt, long_opt)) : std::nullopt );
+    }
+
+private:
+    arguments_t args;
+    std::string program_name;
+
+    arguments_t::const_iterator find(const std::string& short_opt, const std::string& long_opt) const
+    {
+        return std::find_if(args.cbegin(), args.cend(), [long_opt, short_opt](const arguments_t::value_type& option) -> bool 
+        {
+            return ( ( (!long_opt.empty()) && (option.find(long_opt) != std::string::npos ) )
+                || ( !short_opt.empty() && ((option[0] == '-') && (option[1] != '-') && (option.find(short_opt[1]) != std::string::npos)) ) );
+        });
+    }
+
+    bool found(const arguments_t::const_iterator& arg_it) const
+    { return arg_it != args.cend(); }
+
+    std::string_view get(arguments_t::const_iterator& arg_it, const std::string& short_opt, const std::string& long_opt) const
+    {
+        if( arg_it != args.cend() )
+        {
+            const std::string_view& option = *arg_it;
+            size_t pos = option.find('=');
+            if( pos != std::string_view::npos )
+            {
+                return option.substr(pos+1);
+            } 
+            else if( !short_opt.empty() && (option.length() > short_opt.length()) && (option.find(short_opt[1]) == 1) ) 
+            {
+                return option.substr(short_opt.length());
+            }
+            else if( !long_opt.empty() && (option.length() > long_opt.length()) && (option.find(long_opt) != std::string_view::npos) )
+            {
+                return option.substr(long_opt.length());
+            }
+            else {
+                ++arg_it;
+                if( arg_it != args.cend() )
+                {
+                    auto res = *arg_it;
+                    --arg_it;
+                    return res;
+                }
+            }
+        }
+        return "";
+    }
+
+    stringview_list_t getList(arguments_t::const_iterator& arg_it, const std::string& delim, const std::string& short_opt, const std::string& long_opt) const
+    {
+        stringview_list_t list;
+        auto packed_value = get(arg_it, short_opt, long_opt);
+        size_t pos = packed_value.find(delim);
+        while( pos != std::string_view::npos )
+        {
+            if( pos > 0)
+            { list.emplace_back(packed_value.substr(0, pos)); }
+            packed_value = packed_value.substr(pos + 1);
+            pos = packed_value.find(delim);
+        }
+
+        if( !packed_value.empty() )
+        { list.emplace_back(packed_value); }
+
+        return list;
     }
 };
 

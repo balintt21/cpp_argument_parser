@@ -23,8 +23,8 @@ int main(int argc, char** argv)
     }
 
     const bool flag = arguments.has("-o","--optional");
-    const bool short_version_only = arguments.has("s", "");
-    const bool long_version_only = arguments.has("", "long");
+    const bool short_version_only = arguments.has("-s", "");
+    const bool long_version_only = arguments.has("", "--long");
 
     int64_t integer_value = 0;
     double double_value = 0.0;
