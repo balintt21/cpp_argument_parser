@@ -32,7 +32,6 @@
 * *at*(pos) -> ```std::string_view```
 * *[pos]* -> ```std::string_view```
 ## Option parser functions
-> Option marker characters are omissible ('-', "--")
 ```c++
 const std::string& short_opt, const std::string& long_opt
 ```
