@@ -143,8 +143,8 @@ int main(int argc, char** argv)
 ```c++
 const std::string& command_name
 ```
-* *registerCommand(command_name, [handler_function](#handler-function-type))* -> ```void```
-* *registerExit(command_name)* -> ```void```
+* *add(command_name, [handler_function](#handler-function-type))* -> ```void```
+* *commandList() -> ```std::vector< std::string >```
 * *run()* -> ```int```
 
 ### Handler function type
