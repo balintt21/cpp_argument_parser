@@ -1,4 +1,7 @@
 # cpp_argument_parser
+# Classes
+- [ArgumentParser](#argumentparser-is-lightweight-header-only-argument-parser-class)
+- [CommandLine](#commandline)
 ## ArgumentParser is lightweight header only argument parser class
 - *Uses **std::string_view** underneath instead of copying* :bulb:
 - *Requirement: **C++17*** :warning:
@@ -129,4 +132,6 @@ int main(int argc, char** argv)
     return 0;
 }
 ```
+
+# CommandLine
  
