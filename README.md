@@ -22,7 +22,9 @@
 - Long options consist of ‘--’ followed by a name made of alphanumeric characters and dashes
 
 ## Getter functions
-> pos:```size_t```
+```c++
+size_t pos
+```
 * *programName*() -> ```const char*```
 * *empty*() -> ```bool```
 * *size*() -> ```size_t```
