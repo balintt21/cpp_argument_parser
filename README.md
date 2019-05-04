@@ -4,6 +4,7 @@
 - *Minimum requirement: **C++17*** :warning:
 
 ## Program Argument Syntax
+> [See POSIX Program Argument Syntax Conventions](https://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html)
 - Arguments are options if they begin with a hyphen delimiter (‘-’)
 - Multiple options may follow a hyphen delimiter in a single token if the options do not take arguments. Thus, ‘-abc’ is equivalent to ‘-a -b -c’
 - Option names are single alphanumeric characters
@@ -13,7 +14,6 @@
   Thus, ‘-o foo’ and ‘-ofoo’ are equivalent.
 - Options typically precede other non-option arguments
 - Long options consist of ‘--’ followed by a name made of alphanumeric characters and dashes
-> [See POSIX Program Argument Syntax Conventions](https://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html)
 
 ## Getter functions
 > pos:```size_t```
