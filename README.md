@@ -27,8 +27,9 @@
 * *[pos]* -> ```std::string_view```
 ## Option parser functions
 > Option marker characters are omissible ('-', "--")
-
-> short_opt:```const std::string&```, long_opt: ```const std::string&```
+```c++
+const std::string& short_opt, const std::string& long_opt
+```
 * *has*(short_opt, long_opt)       -> ```bool```
 * *get*(short_opt, long_opt)       -> ```std::optional< std::string_view >```
 * *getString*(short_opt, long_opt) -> ```std::optional< std::string >```
