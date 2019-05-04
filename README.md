@@ -2,6 +2,7 @@
 ## ArgumentParser is lightweight header only argument parser class
 - *Uses **std::string_view** underneath instead of copying* :bulb:
 - *Minimum requirement: **C++17*** :warning:
+- [Example :information_source:](#example)
 
 ## Program Argument Syntax
 [See POSIX Program Argument Syntax Conventions](https://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html)
