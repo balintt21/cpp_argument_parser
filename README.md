@@ -2,7 +2,18 @@
 ## ArgumentParser is lightweight header only argument parser class
 - *Uses std::string_view underneath instead of copying* :bulb:
 - *Minimum requirement: **C++17*** :warning:
-- *Options must start with '-' or "--"*
+
+## Program Argument Syntax
+- Arguments are options if they begin with a hyphen delimiter (‘-’)
+- Multiple options may follow a hyphen delimiter in a single token if the options do not take arguments. Thus, ‘-abc’ is equivalent to ‘-a -b -c’
+- Option names are single alphanumeric characters
+- Certain options require an argument
+- An option and its argument may or may not appear as separate tokens. 
+  (In other words, the whitespace separating them is optional.) 
+  Thus, ‘-o foo’ and ‘-ofoo’ are equivalent.
+- Options typically precede other non-option arguments
+- Long options consist of ‘--’ followed by a name made of alphanumeric characters and dashes
+[https://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html](Source: POSIX Program Argument Syntax Conventions)
 
 ## Getter functions
 > pos:```size_t```
@@ -16,7 +27,7 @@
 * *[pos]* -> ```std::string_view```
 ## Option parser functions
 > short_opt:```const std::string&```, long_opt: ```const std::string&```
-> option marker characters can be ommited ('-', "--")
+> Option marker characters can be ommited ('-', "--")
 * *has*(short_opt, long_opt)       -> ```bool```
 * *get*(short_opt, long_opt)       -> ```std::optional< std::string_view >```
 * *getString*(short_opt, long_opt) -> ```std::optional< std::string >```
