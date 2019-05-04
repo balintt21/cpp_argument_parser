@@ -51,10 +51,15 @@ public:
 
     arguments_t::const_iterator find(const std::string& short_opt, const std::string& long_opt) const
     {
-        return std::find_if(args.cbegin(), args.cend(), [long_opt, short_opt](const arguments_t::value_type& option) -> bool 
+        std::string _short_opt(short_opt);
+        std::string _long_opt(long_opt);
+        if( !_short_opt.empty() && (short_opt[0] != '-') )                              { _short_opt.insert(0, "-"); }
+        while( !_long_opt.empty() && (_long_opt[0] != '-') && (_long_opt[1] != '-') )   { _long_opt.insert(0, "-"); }
+
+        return std::find_if(args.cbegin(), args.cend(), [_long_opt, _short_opt](const arguments_t::value_type& option) -> bool 
         {
-            return ( ( (!long_opt.empty()) && (option.find(long_opt) != std::string::npos ) )
-                || ( !short_opt.empty() && ((option[0] == '-') && (option[1] != '-') && (option.find(short_opt[1]) != std::string::npos)) ) );
+            return ( ( (!_long_opt.empty()) && (option.find(_long_opt) != std::string::npos ) )
+                || ( !_short_opt.empty() && ((option[0] == '-') && (option[1] != '-') && (option.find(_short_opt[1]) != std::string::npos)) ) );
         });
     }
 
