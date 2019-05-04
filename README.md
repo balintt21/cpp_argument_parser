@@ -1,10 +1,10 @@
 # cpp_argument_parser
 ## ArgumentParser is lightweight header only argument parser class
-Uses std::string_view underneath instead of copying
+- *Uses std::string_view underneath instead of copying* :bulb:
 - *Minimum requirement: **C++17*** :warning:
 
 ## Getter functions
-> short_opt:```const std::string&```, long_opt: ```const std::string&```
+> pos:```size_t```
 * *programName*() -> ```const char*```
 * *empty*() -> ```bool```
 * *size*() -> ```size_t```
@@ -12,7 +12,7 @@ Uses std::string_view underneath instead of copying
 * *back*() -> ```std::string_view```
 * *back*(pos) -> ```std::string_view```
 * *at*(pos) -> ```std::string_view```
-* *[]*(pos) -> ```std::string_view```
+* *[pos]* -> ```std::string_view```
 ## Parser functions
 > short_opt:```const std::string&```, long_opt: ```const std::string&```
 * *has*(short_opt, long_opt)       -> ```bool```
