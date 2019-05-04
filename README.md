@@ -2,6 +2,8 @@
 # Classes
 - [ArgumentParser](#argumentparser-is-lightweight-header-only-argument-parser-class)
 - [CommandLine](#commandline)
+# Tools
+- [Code generator](#code-generator)
 ## ArgumentParser is lightweight header only argument parser class
 - *Uses **std::string_view** underneath instead of copying* :bulb:
 - *Requirement: **C++17*** :warning:
@@ -135,4 +137,7 @@ int main(int argc, char** argv)
 
 # CommandLine
 [:arrow_left: Classes](#classes)
+
+# Code generator
+[:arrow_left: Tools](#tools)
  
