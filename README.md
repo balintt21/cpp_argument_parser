@@ -139,7 +139,7 @@ int main(int argc, char** argv)
 # CommandLine
 [:arrow_left: Classes](#classes)
 - *Provides an event loop for parsing commands with arguments from standard input*
-- *Requirement: ArgumentParser*
+- *Requirement: **ArgumentParser***
 - [Example :information_source:](#example-2)
 
 ## Member functions
