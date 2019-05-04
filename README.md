@@ -1,7 +1,7 @@
 # cpp_argument_parser
 # Classes
 - [ArgumentParser](#argumentparser-is-lightweight-header-only-argument-parser-class)
-- [CommandLine](#commandline-class-provides-an-event-loop)
+- [CommandLine](#commandline)
 # Tools
 - [Code generator](#code-generator)
 ## ArgumentParser is lightweight header only argument parser class
@@ -134,9 +134,9 @@ int main(int argc, char** argv)
 }
 ```
 
-# CommandLine class provides an event loop
+# CommandLine
 [:arrow_left: Classes](#classes)
-- *Parses commands with arguments from standard input*
+- *Provides an event loop for parsing commands with arguments from standard input*
 - *Requirement: ArgumentParser*
 
 ## Member functions
