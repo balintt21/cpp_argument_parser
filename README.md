@@ -1,7 +1,7 @@
 # cpp_argument_parser
 # Classes
 - [ArgumentParser](#argumentparser-is-lightweight-header-only-argument-parser-class)
-- [CommandLine](#commandline)
+- [CommandLine](#commandline-class-provides-an-event-loop)
 # Tools
 - [Code generator](#code-generator)
 ## ArgumentParser is lightweight header only argument parser class
@@ -138,6 +138,18 @@ int main(int argc, char** argv)
 [:arrow_left: Classes](#classes)
 - *Parses commands with arguments from standard input*
 - *Requirement: ArgumentParser*
+
+## Member functions
+* *registerCommand(command_name, handler_function)* -> ```void```
+* *registerExit(command_name)* -> ```void```
+* *run()* -> ```int```
+
+### Handler function type:
+```c++
+std::function<int (const ArgumentParser&)>
+```
+- Input parameter is a reference to an ArgumentParser object containing the command arguments
+- Returning other than zero from a handler function tells the event loop to quit
 
 # Code generator
 [:arrow_left: Tools](#tools)
