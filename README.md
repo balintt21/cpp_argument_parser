@@ -134,7 +134,7 @@ int main(int argc, char** argv)
 }
 ```
 
-# CommandLine
+# CommandLine class provides a command line loop
 [:arrow_left: Classes](#classes)
 
 # Code generator
