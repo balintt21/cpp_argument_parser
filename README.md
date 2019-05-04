@@ -2,6 +2,7 @@
 ## ArgumentParser is lightweight header only argument parser class
 - *Uses std::string_view underneath instead of copying* :bulb:
 - *Minimum requirement: **C++17*** :warning:
+- *Options must start with '-' or "--"*
 
 ## Getter functions
 > pos:```size_t```
@@ -14,10 +15,8 @@
 * *at*(pos) -> ```std::string_view```
 * *[pos]* -> ```std::string_view```
 ## Option parser functions
-- *If an argument starts with '-'  then it is recognized as short option*
-- *If an argument starts with "--" then it is recognized as long option*
-- Option marker characters can be ommited when using the following functions 
 > short_opt:```const std::string&```, long_opt: ```const std::string&```
+> option marker characters can be ommited ('-', "--")
 * *has*(short_opt, long_opt)       -> ```bool```
 * *get*(short_opt, long_opt)       -> ```std::optional< std::string_view >```
 * *getString*(short_opt, long_opt) -> ```std::optional< std::string >```
