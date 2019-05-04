@@ -4,7 +4,7 @@
 - *Minimum requirement: **C++17*** :warning:
 
 ## Program Argument Syntax
-> [See POSIX Program Argument Syntax Conventions](https://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html)
+[See POSIX Program Argument Syntax Conventions](https://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html)
 - Arguments are options if they begin with a hyphen delimiter (‘-’)
 - Multiple options may follow a hyphen delimiter in a single token if the options do not take arguments. Thus, ‘-abc’ is equivalent to ‘-a -b -c’
 - Option names are single alphanumeric characters
