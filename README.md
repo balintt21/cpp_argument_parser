@@ -1,6 +1,6 @@
 # cpp_argument_parser
 ## ArgumentParser is lightweight header only argument parser class
-- *Uses std::string_view underneath instead of copying* :bulb:
+- *Uses **std::string_view** underneath instead of copying* :bulb:
 - *Minimum requirement: **C++17*** :warning:
 
 ## Program Argument Syntax
