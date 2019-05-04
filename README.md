@@ -34,7 +34,7 @@ const std::string& short_opt, const std::string& long_opt
 * *get*(short_opt, long_opt)       -> ```std::optional< std::string_view >```
 * *getString*(short_opt, long_opt) -> ```std::optional< std::string >```
 * *getList*(short_opt, long_opt)   -> ```std::optional< vector< std::string > >```
-* *getInt*(short_opt, long_opt)    -> ```std::optional< int64_t >```
+* *getInt*(short_opt, long_opt, base = 10)    -> ```std::optional< int64_t >```
 * *getDouble*(short_opt, long_opt) -> ```std::optional< double >```
 * *getHex*(short_opt, long_opt)    -> ```std::optional< int64_t >```
 
