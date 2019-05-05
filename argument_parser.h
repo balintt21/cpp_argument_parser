@@ -19,7 +19,7 @@ public:
     typedef std::vector<std::string_view> arguments_t;
     typedef arguments_t stringview_list_t;
 
-    ArgumentParser(int argc, char** argv) : args(), program_name(argv[0])
+    ArgumentParser(int argc, char** argv, const std::string& short_options = "") : args(), program_name(argv[0]), short_option_tips(short_options)
     {
         args.reserve(argc);
         for(int i = 0; i < argc; ++i) { args.emplace_back(argv[i]); }
@@ -91,13 +91,35 @@ public:
 private:
     arguments_t args;
     std::string program_name;
+    std::string short_option_tips;
 
     arguments_t::const_iterator find(const std::string& short_opt, const std::string& long_opt) const
     {
-        return std::find_if(args.cbegin(), args.cend(), [long_opt, short_opt](const arguments_t::value_type& option) -> bool 
+        return std::find_if(args.cbegin(), args.cend(), [long_opt, short_opt, this](const arguments_t::value_type& option) -> bool 
         {
-            return ( ( (!long_opt.empty()) && (option.find(long_opt) != std::string::npos ) )
-                || ( !short_opt.empty() && ((option[0] == '-') && (option[1] != '-') && (option.find(short_opt[1]) != std::string::npos)) ) );
+            if( (!long_opt.empty()) && (option.find(long_opt) != std::string::npos ) )
+            { return true; }
+
+            if( !short_opt.empty() && ( (option[0] == '-') && (option[1] != '-') ) )
+            {
+                size_t pos = option.find(short_opt[1]);
+                if( pos == 1 ) 
+                { return true; } 
+                else if(pos != std::string::npos)
+                {
+                    if(short_option_tips.empty()) { return true; }
+                    std::string tips_cpy = short_option_tips;
+                    size_t i = 1;
+                    for(; i < option.length(); ++i)
+                    { 
+                        pos = tips_cpy.find(option[i]);
+                        if( pos == std::string::npos ) { break; }
+                        else { tips_cpy.erase(pos); } 
+                    }
+                    return (i == option.length());
+                }
+            }
+            return false;
         });
     }
 
@@ -113,7 +135,7 @@ private:
             if( pos != std::string_view::npos )
             {
                 return option.substr(pos+1);
-            } 
+            }
             else if( !short_opt.empty() && (option.length() > short_opt.length()) && (option.find(short_opt[1]) == 1) ) 
             {
                 return option.substr(short_opt.length());
