@@ -49,6 +49,8 @@ public:
     bool has(const std::string& short_opt, const std::string& long_opt) const
     { return find(short_opt, long_opt) != args.cend(); }
 
+    void setShortOptionTips(const std::string& short_options){ short_option_tips = short_options; }
+
     std::optional<std::string_view> get(const std::string& short_opt, const std::string& long_opt) const
     {
         auto arg = find(short_opt, long_opt);
