@@ -25,8 +25,10 @@ def generateCode(data):
             long_opt = f"\"--{entry['long']}\"" if has_long else "\"\"" 
             type_fun = ""
             delim_param = ""
+            base = ""
             if entry['type'] == "int":
                 type_fun = "getInt"
+                base = f", {entry['base']}" if "base" in entry else ", 10"
             elif entry['type'] == "double":
                 type_fun = "getDouble"
             elif entry['type'] == "string":
@@ -38,7 +40,7 @@ def generateCode(data):
             if not type_fun:
                 parser_code += f"\tif(args.has({short_opt}, {long_opt})) {{ opt_map[\"{entry['name']}\"] = option_map::Value(1L); }}\n"
             else:
-                parser_code += f"\tif(auto opt = args.{type_fun}({short_opt}, {long_opt}{delim_param})) {{ opt_map[\"{entry['name']}\"] = option_map::Value(opt.value()); }}\n"
+                parser_code += f"\tif(auto opt = args.{type_fun}({short_opt}, {long_opt}{delim_param}{base})) {{ opt_map[\"{entry['name']}\"] = option_map::Value(opt.value()); }}\n"
                 
     get_options_fun += "\";\n}\n\n"
     parser_code += "\n\treturn opt_map;\n }\n"
