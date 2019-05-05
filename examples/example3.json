@@ -1,0 +1,65 @@
+[
+    {
+        "name" : "Message",
+        "type" : "string",
+        "short" : "m",
+        "long" : "message",
+        "help" : "Expects some string"
+    },
+    {
+        "name" : "Integer",
+        "type" : "int",
+        "short" : "i",
+        "long" : "integer",
+        "help" : "Expects integer value"
+    },
+    {
+        "name" : "Double",
+        "type" : "double",
+        "short" : "d",
+        "long" : "double",
+        "help" : "Expects double value"
+    },
+    {
+        "name" : "Hex",
+        "type" : "int",
+        "base" : 16,
+        "short" : "x",
+        "long" : "hex",
+        "help" : "Expects hexa value"
+    },
+    {
+        "name" : "Short",
+        "type" : "bool",
+        "short" : "s",
+        "help" : "Short version option"
+    },
+    {
+        "name" : "Long",
+        "type" : "bool",
+        "long" : "long",
+        "help" : "Long version option"
+    },
+    {
+        "name" : "Optional",
+        "type" : "bool",
+        "short" : "o",
+        "long" : "optional",
+        "help" : "It is optional"
+    },
+    {
+        "name" : "Help",
+        "type" : "bool",
+        "short" : "h",
+        "long" : "help",
+        "help" : "Show this help message"
+    },
+    {
+        "name" : "List",
+        "type" : "list",
+        "delim" : ",",
+        "short" : "l",
+        "long" : "list",
+        "help" : "[value][delim=',']*\\n\\t                      Accepts a list of values separated by ','"
+    }
+]
