@@ -15,7 +15,13 @@ def generateCode(data):
     code = "#ifndef GENERATED_OPTION_PARSER_H_\n#define GENERATED_OPTION_PARSER_H_\n\n#include \"argument_parser.h\"\n"
     code += base64.b64decode(option_map_h_code_base64).decode("utf-8")
     get_options_fun = "\nstd::string getOptionsHelp()\n{\n\treturn \"Options\\n"
-    parser_code = "option_map_t parseOptions(const ArgumentParser& args)\n{\n\toption_map_t opt_map;\n"
+    parser_code = "option_map_t parseOptions(ArgumentParser& args)\n{\n\toption_map_t opt_map;\n"
+    short_tips = ""
+    for entry in data:
+        if "short" in entry:
+            short_tips += entry['short']
+    if short_tips:
+        parser_code += f"\targs.setShortOptionTips(\"{short_tips}\");\n"
     for entry in data:
         has_short = "short" in entry
         has_long = "long" in entry
